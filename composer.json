@@ -1,0 +1,34 @@
+{
+    "name": "fivepercent/model-transformer",
+    "description": "Transform object to another objects",
+    "keywords": [ "transformer", "model", "object", "model transformer" ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vitaliy Zhuk",
+            "email": "zhuk2205@gmail.com"
+        },
+
+        {
+            "name": "Dmitry Krasun",
+            "email": "krasun.net@gmail.com"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.4",
+        "fivepercent/exception": "~1.0",
+        "fivepercent/reflection": "~1.0"
+    },
+
+    "suggest": {
+        "doctrine/annotations": "For use annotations in transformation",
+        "fivepercent/cache": "For use cached metadata",
+        "symfony/expression-language": "For get transformed data with used Symfony ExpressionLanguage"
+    },
+
+    "autoload": {
+        "psr-4": { "FivePercent\\Component\\ModelTransformer\\": "src/" }
+    }
+}
