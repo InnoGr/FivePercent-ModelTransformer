@@ -154,23 +154,7 @@ class AnnotatedModelTransformer implements ModelTransformerInterface, ModelTrans
      */
     protected function transformValue($object, $value, PropertyMetadata $metadata, \ReflectionProperty $property)
     {
-        if (!$value) {
-            return $value;
-        }
-
-        if ($metadata->isShouldTransform()) {
-            if (!is_object($value)) {
-                throw new TransformationFailedException(sprintf(
-                    'Can not transform property "%s" in class "%s". The value must be a object, but "%s" given.',
-                    $property->getName(),
-                    $property->getDeclaringClass()->getName(),
-                    gettype($value)
-                ));
-            }
-
-            return $this->transformerManager->transform($value);
-        }
-
+        // Check, if should use expression language for get value
         if ($metadata->getExpressionValue()) {
             if (!$this->expressionLanguage) {
                 throw new \LogicException(
@@ -184,6 +168,20 @@ class AnnotatedModelTransformer implements ModelTransformerInterface, ModelTrans
             ];
 
             $value = $this->expressionLanguage->evaluate($metadata->getExpressionValue(), $attributes);
+        }
+
+        // Check, if should use transformer for this value (recursive)
+        if ($metadata->isShouldTransform()) {
+            if (!is_object($value)) {
+                throw new TransformationFailedException(sprintf(
+                    'Can not transform property "%s" in class "%s". The value must be a object, but "%s" given.',
+                    $property->getName(),
+                    $property->getDeclaringClass()->getName(),
+                    gettype($value)
+                ));
+            }
+
+            return $this->transformerManager->transform($value);
         }
 
         return $value;
